@@ -1,5 +1,6 @@
-package com.socialmedia.api.controllers;
+package com.clinicmanager.api.controllers;
 
+import com.clinicmanager.api.dto.MedicoCreateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MedicoController {
 
     @PostMapping
-    public void cadastrar(@RequestBody){
+    public void cadastrar(@RequestBody MedicoCreateDTO dados){
         return;
     }
 }

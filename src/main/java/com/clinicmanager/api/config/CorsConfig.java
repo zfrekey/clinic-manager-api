@@ -1,4 +1,4 @@
-package com.socialmedia.api.config;
+package com.clinicmanager.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.socialmedia.api;
+package com.clinicmanager.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

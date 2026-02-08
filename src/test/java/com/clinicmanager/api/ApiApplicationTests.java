@@ -1,4 +1,4 @@
-package com.socialmedia.api;
+package com.clinicmanager.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
