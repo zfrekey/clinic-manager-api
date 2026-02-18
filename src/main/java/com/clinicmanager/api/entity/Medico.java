@@ -1,11 +1,17 @@
 package com.clinicmanager.api.entity;
 
-import com.clinicmanager.api.dto.enums.Especialidade;
-import com.clinicmanager.api.entity.Endereco;
+import com.clinicmanager.api.dto.DadosEndereco;
+import com.clinicmanager.api.entity.enums.Especialidade;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Table(name= "medicos")
 @Entity(name = "Medico")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Medico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,5 +24,6 @@ public class Medico {
     private Especialidade especialidade;
 
     @Embedded
-    private Endereco Endereco;
+    private DadosEndereco Endereco;
+
 }

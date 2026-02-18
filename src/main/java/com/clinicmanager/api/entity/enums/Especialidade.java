@@ -1,4 +1,4 @@
-package com.clinicmanager.api.dto.enums;
+package com.clinicmanager.api.entity.enums;
 
 public enum Especialidade {
 
