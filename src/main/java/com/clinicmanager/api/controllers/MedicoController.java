@@ -1,8 +1,12 @@
 package com.clinicmanager.api.controllers;
 
 import com.clinicmanager.api.dto.MedicoCreateDTO;
-import com.clinicmanager.api.services.MedicoService; // Importe o Service
+import com.clinicmanager.api.dto.MedicoEditDTO;
+import com.clinicmanager.api.dto.MedicoResponseDTO;
+import com.clinicmanager.api.services.MedicoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,10 +14,26 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MedicoController {
 
-    private final MedicoService service;
+    private final MedicoService medicoService;
 
     @PostMapping
-    public void cadastrar(@RequestBody MedicoCreateDTO data){
-        service.create(data);
+    @ResponseStatus(HttpStatus.CREATED)
+    public MedicoResponseDTO createMedico(@Valid @RequestBody MedicoCreateDTO data){
+        return medicoService.create(data);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id){
+        return medicoService.delete(id);
+    }
+
+    @PatchMapping("/{id}")
+    public MedicoResponseDTO edit(@PathVariable Long id, @RequestBody MedicoEditDTO dto){
+        return medicoService.edit(id,dto);
+    }
+
+    @GetMapping("/hello")
+    public String hello(){
+        return "olá mundo";
     }
 }

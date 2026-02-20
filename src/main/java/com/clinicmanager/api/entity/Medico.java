@@ -24,6 +24,6 @@ public class Medico {
     private Especialidade especialidade;
 
     @Embedded
-    private DadosEndereco Endereco;
+    private Endereco endereco;
 
 }
