@@ -11,22 +11,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static com.clinicmanager.api.dto.MedicoResponseDTO.toResponseDTO;
+
 @Service
 @RequiredArgsConstructor
 public class MedicoService {
 
     private final MedicoRepository medicoRepository;
 
-    private MedicoResponseDTO toResponseDTO(Medico medico) {
-        return new MedicoResponseDTO(
-                medico.getId(),
-                medico.getName(),
-                medico.getEmail(),
-                medico.getCrm(),
-                medico.getEspecialidade(),
-                toDadosEndereco(medico.getEndereco())
-        );
-    }
 
     private DadosEndereco toDadosEndereco(Endereco endereco) {
         if (endereco == null) return null;
@@ -70,6 +64,13 @@ public class MedicoService {
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("CRM já cadastrado");
         }
+    }
+
+    public List<MedicoResponseDTO> list(){
+        return medicoRepository.findAll()
+                .stream()
+                .map(MedicoResponseDTO::toResponseDTO)
+                .toList();
     }
 
     public MedicoResponseDTO edit(Long id, MedicoEditDTO dto){
