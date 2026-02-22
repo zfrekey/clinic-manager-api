@@ -2,6 +2,7 @@ package com.clinicmanager.api.services;
 
 import com.clinicmanager.api.dto.DadosEndereco;
 import com.clinicmanager.api.dto.MedicoCreateDTO;
+import com.clinicmanager.api.dto.MedicoEditDTO;
 import com.clinicmanager.api.dto.MedicoResponseDTO;
 import com.clinicmanager.api.entity.Endereco;
 import com.clinicmanager.api.entity.Medico;
@@ -69,5 +70,32 @@ public class MedicoService {
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("CRM já cadastrado");
         }
+    }
+
+    public MedicoResponseDTO edit(Long id, MedicoEditDTO dto){
+
+        Medico medico = medicoRepository.findById(id).
+                orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (dto.name() != null) {
+            medico.setName(dto.name());
+        }
+        if (dto.email() != null) {
+            medico.setEmail(dto.email());
+        }
+        if(dto.especialidade() != null) {
+            medico.setEspecialidade(dto.especialidade());
+        }
+
+        Medico updated = medicoRepository.save(medico);
+        return toResponseDTO(updated);
+
+    }
+
+    public void delete(Long id){
+        if (!medicoRepository.existsById(id)) {
+            throw new RuntimeException("usuário não encontrado");
+        }
+        medicoRepository.deleteById(id);
     }
 }

@@ -24,16 +24,16 @@ public class MedicoController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
-        return medicoService.delete(id);
+        medicoService.delete(id);
     }
 
     @PatchMapping("/{id}")
-    public MedicoResponseDTO edit(@PathVariable Long id, @RequestBody MedicoEditDTO dto){
-        return medicoService.edit(id,dto);
+    public MedicoResponseDTO edit(@PathVariable Long id, @RequestBody MedicoEditDTO medico){
+        return medicoService.edit(id, medico);
     }
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "olá mundo";
+    @GetMapping()
+    public UserReponseDTO listAll(){
+        return medicoService.listAll();
     }
 }
