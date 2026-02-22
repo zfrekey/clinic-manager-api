@@ -1,20 +1,32 @@
+version: '3.8'
+
 services:
   clinic_db:
-    image: mysql:8.0
+    image: mysql:8.0.35-debian
     container_name: clinic_db
-    restart: always
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: clinic_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-        test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-proot" ]
-        interval: 5s
-        timeout: 5s
-        retries: 20
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "clinic_user", "-pclinic_pass_2025"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - clinic-network
 
 volumes:
   mysql_data:
+    driver: local
+
+networks:
+  clinic-network:
+    driver: bridge
