@@ -1,15 +1,20 @@
 package com.clinicmanager.api.entity;
 
-import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Embeddable
+@Entity(name = "Endereco")
+@Table(name = "enderecos")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Endereco {
+@EqualsAndHashCode(of = "id")
+public class EnderecoEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String logradouro;
     private String bairro;

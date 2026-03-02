@@ -1,11 +1,11 @@
 package com.clinicmanager.api.services;
 
 import com.clinicmanager.api.dto.DadosEndereco;
-import com.clinicmanager.api.dto.MedicoCreateDTO;
-import com.clinicmanager.api.dto.MedicoEditDTO;
-import com.clinicmanager.api.dto.MedicoResponseDTO;
-import com.clinicmanager.api.entity.Endereco;
-import com.clinicmanager.api.entity.Medico;
+import com.clinicmanager.api.dto.medico.MedicoCreateDTO;
+import com.clinicmanager.api.dto.medico.MedicoEditDTO;
+import com.clinicmanager.api.dto.medico.MedicoResponseDTO;
+import com.clinicmanager.api.entity.EnderecoEntity;
+import com.clinicmanager.api.entity.MedicoEntity;
 import com.clinicmanager.api.repositories.MedicoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.clinicmanager.api.dto.MedicoResponseDTO.toResponseDTO;
+import static com.clinicmanager.api.dto.medico.MedicoResponseDTO.toResponseDTO;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,52 +22,22 @@ public class MedicoService {
 
     private final MedicoRepository medicoRepository;
 
-
-    private DadosEndereco toDadosEndereco(Endereco endereco) {
-        if (endereco == null) return null;
-
-        return new DadosEndereco(
-                endereco.getLogradouro(),
-                endereco.getBairro(),
-                endereco.getCep(),
-                endereco.getCidade(),
-                endereco.getUf(),
-                endereco.getNumero(),
-                endereco.getComplemento()
-        );
-    }
-
-    private Endereco toEndereco(DadosEndereco dados) {
-        if (dados == null) return null;
-
-        return new Endereco(
-                dados.logradouro(),
-                dados.bairro(),
-                dados.cep(),
-                dados.numero(),
-                dados.complemento(),
-                dados.cidade(),
-                dados.uf()
-        );
-    }
-
     public MedicoResponseDTO create(MedicoCreateDTO data) {
-        Medico medico = new Medico();
+        MedicoEntity medico = new MedicoEntity();
         medico.setName(data.name());
         medico.setEmail(data.email());
         medico.setCrm(data.crm());
         medico.setEspecialidade(data.especialidade());
-        medico.setEndereco(toEndereco(data.endereco()));
 
         try {
-            Medico saved = medicoRepository.save(medico);
+            MedicoEntity saved = medicoRepository.save(medico);
             return toResponseDTO(saved);
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("CRM já cadastrado");
         }
     }
 
-    public List<MedicoResponseDTO> list(){
+    public List<MedicoResponseDTO> listAll(){
         return medicoRepository.findAll()
                 .stream()
                 .map(MedicoResponseDTO::toResponseDTO)
@@ -75,7 +46,7 @@ public class MedicoService {
 
     public MedicoResponseDTO edit(Long id, MedicoEditDTO dto){
 
-        Medico medico = medicoRepository.findById(id).
+        MedicoEntity medico = medicoRepository.findById(id).
                 orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         if (dto.name() != null) {
@@ -88,7 +59,7 @@ public class MedicoService {
             medico.setEspecialidade(dto.especialidade());
         }
 
-        Medico updated = medicoRepository.save(medico);
+        MedicoEntity updated = medicoRepository.save(medico);
         return toResponseDTO(updated);
 
     }
